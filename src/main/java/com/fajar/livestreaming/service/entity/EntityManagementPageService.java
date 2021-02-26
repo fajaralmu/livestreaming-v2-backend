@@ -7,12 +7,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.math3.stat.descriptive.summary.Product;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -20,6 +17,9 @@ import org.springframework.ui.Model;
 import com.fajar.livestreaming.dto.WebResponse;
 import com.fajar.livestreaming.dto.model.BaseModel;
 import com.fajar.livestreaming.entity.BaseEntity;
+import com.fajar.livestreaming.entity.ChatMessage;
+import com.fajar.livestreaming.entity.ConferenceRoom;
+import com.fajar.livestreaming.entity.User;
 import com.fajar.livestreaming.entity.setting.EntityManagementConfig;
 import com.fajar.livestreaming.entity.setting.EntityProperty;
 import com.fajar.livestreaming.repository.EntityRepository;
@@ -87,8 +87,9 @@ public class EntityManagementPageService {
 		
 		List<Object> result = new ArrayList<>(); 
 		
-		result.add(entityRepository.getConfig("chatmessage").setIconClassName("fas fa-book")); 
-		result.add(entityRepository.getConfig("user").setIconClassName("fas fa-users"));   
+		addConfig(result, ChatMessage.class, ("fas fa-book")); 
+		addConfig(result, User.class, ("fas fa-users")); 
+		addConfig(result, ConferenceRoom.class, ("fas fa-video")); 
 		
 		return WebResponse.builder().generalList(result).build();
 	}

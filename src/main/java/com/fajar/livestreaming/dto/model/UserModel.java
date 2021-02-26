@@ -68,7 +68,7 @@ public class UserModel extends BaseModel<User>{
 	
 	public AuthorityType getRole() {
 		if (null != authorities && authorities.size() > 0) {
-			return ((Authority)authorities.toArray()[0]).getName();
+			return ((AuthorityModel)authorities.toArray()[0]).getName();
 		}
 		return role;
 	}

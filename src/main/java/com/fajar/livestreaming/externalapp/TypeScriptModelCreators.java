@@ -15,13 +15,13 @@ import org.apache.commons.io.FileUtils;
 import com.fajar.livestreaming.util.EntityUtil;
 
 public class TypeScriptModelCreators {
-	final static String inputDir = "D:\\Development\\Kafila Projects\\arabic-club-backend\\src\\"
-			+ "main\\java\\com\\fajar\\arabicclub\\entity\\";
-	final static String outputDir = "D:\\Development\\Kafila Projects\\models\\";
+	final static String inputDir = "D:\\Development\\Fajar\\livestreaming-v2\\back-end\\src\\"
+			+ "main\\java\\com\\fajar\\livestreaming\\dto\\";
+	final static String outputDir = "D:\\Development\\Fajar\\\\livestreaming-v2\\models\\";
 
 	public static void main2(String[] args) {
 		List<String> names = getJavaFiles(inputDir);
-		List<Class> classes = getJavaClasses("com.fajar.livestreaming.entity", names);
+		List<Class> classes = getJavaClasses("com.fajar.livestreaming.dto", names);
 		for (Class class1 : classes) {
 			String content = printClass(class1);
 			writeFile(outputDir + class1.getSimpleName() + ".ts", content);
@@ -30,6 +30,7 @@ public class TypeScriptModelCreators {
 
 	public static void main(String[] args) {
 //		printAndWriteClasses(Snippet.class, Thumbnails.class, ThumbnailItem.class);
+		main2(args);
 	}
 
 	public static void printAndWriteClasses(Class... classes) {

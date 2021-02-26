@@ -3,6 +3,9 @@ package com.fajar.livestreaming.dto.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fajar.livestreaming.annotation.Dto;
+import com.fajar.livestreaming.annotation.FormField;
+import com.fajar.livestreaming.constants.FieldType;
 import com.fajar.livestreaming.entity.ConferenceRoom;
 import com.fajar.livestreaming.exception.ApplicationException;
 
@@ -12,6 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Builder.Default;
 
+@Dto(editable = false)
 @Builder
 @Data
 @AllArgsConstructor
@@ -23,10 +27,12 @@ public class ConferenceRoomModel extends BaseModel<ConferenceRoom> {
 	 */
 	private static final long serialVersionUID = -384967775944837620L;
 
+	@FormField
 	private String code;
-
+	@FormField(type = FieldType.FIELD_TYPE_CHECKBOX)
 	private boolean active;
 
+	@FormField(optionItemName = "displayName")
 	private UserModel user;
 
 	@Default
