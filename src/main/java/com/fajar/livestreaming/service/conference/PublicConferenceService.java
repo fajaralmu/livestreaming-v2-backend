@@ -42,15 +42,7 @@ public class PublicConferenceService {
 		return WebResponse.builder().conferenceRoom(room == null ? null : room.toModel()).build();
 	}
 	public WebResponse getRoom(String code, HttpServletRequest httpRequest) {
-		User user = getUser(httpRequest);
-		ConferenceRoom room = conferenceRoomRepository.findTop1ByCode(code);
-		if (null == room) {
-			throw new DataNotFoundException("Room not found");
-		}
-		if (room.isMemberExist(user) == false) {
-			throw new DataNotFoundException("Not Found: Please Join");
-		}
-		return WebResponse.builder().conferenceRoom(room == null ? null : room.toModel()).build();
+		return joinRoom(code, httpRequest);
 	}
 
 	public WebResponse joinRoom(String code, HttpServletRequest httpRequest) {
@@ -60,6 +52,7 @@ public class PublicConferenceService {
 			throw new DataNotFoundException("Room not found");
 		}
 		room.addMember(user);
+		conferenceRoomRepository.save(room);
 		return WebResponse.builder().conferenceRoom(room.toModel()).build();
 	}
 
