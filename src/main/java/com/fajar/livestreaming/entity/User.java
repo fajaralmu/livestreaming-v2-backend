@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import com.fajar.livestreaming.annotation.FormField;
 import com.fajar.livestreaming.constants.AuthorityType;
 import com.fajar.livestreaming.constants.FieldType;
@@ -104,6 +106,10 @@ public class User extends BaseEntity<UserModel> implements SingleImageModel {
 		this.authorities.forEach(a->{_authorities.add(a.toModel());});
 		user.setAuthorities(_authorities );
 		return user;
+	}
+
+	public void encodePassword(BCryptPasswordEncoder passwordEncoder) {
+		 setPassword(passwordEncoder.encode(getPassword()));
 	}
 	 
 

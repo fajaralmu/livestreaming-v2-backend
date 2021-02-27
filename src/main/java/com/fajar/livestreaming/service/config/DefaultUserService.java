@@ -1,6 +1,5 @@
 package com.fajar.livestreaming.service.config;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,11 +13,11 @@ import com.fajar.livestreaming.dto.WebRequest;
 import com.fajar.livestreaming.dto.WebResponse;
 import com.fajar.livestreaming.entity.Authority;
 import com.fajar.livestreaming.entity.User;
+import com.fajar.livestreaming.exception.ApplicationException;
 import com.fajar.livestreaming.repository.AuthorityRepository;
 import com.fajar.livestreaming.repository.EntityRepository;
 import com.fajar.livestreaming.repository.UserRepository;
 import com.fajar.livestreaming.service.SessionValidationService;
-import com.fajar.livestreaming.service.resources.FileService;
 import com.fajar.livestreaming.service.resources.ImageUploadService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,24 +25,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultUserService {
 	@Autowired
-	private UserRepository userRepository;  
+	private UserRepository userRepository;
 	@Autowired
 	private AuthorityRepository authorityRepository;
 	@Autowired
-	private SessionValidationService sessionValidationService;  
+	private SessionValidationService sessionValidationService;
 	@Autowired
 	private EntityRepository entityRepository;
-	
+
 	@Autowired
 	private ImageUploadService imageUploadService;
-	
-	
+
 	private BCryptPasswordEncoder passwordEncoder;
-	
+
 	public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
 		this.passwordEncoder = passwordEncoder;
 	}
-	
+
 	@PostConstruct
 	public void init() {
 		try {
@@ -53,7 +51,6 @@ public class DefaultUserService {
 			e.printStackTrace();
 		}
 	}
-
 
 	/**
 	 * don't invoke this method when tables has not been created yet
@@ -81,34 +78,34 @@ public class DefaultUserService {
 			generateDefaultAdmin();
 		}
 	}
-	
+
 	private void generateDefaultAdmin() {
 		Authority adminAuth = authorityRepository.findTop1ByName(AuthorityType.ROLE_ADMIN);
 		if (null == adminAuth) {
 			log.info("___________null == adminAuth");
 			return;
 		}
-		
+
 		User user = new User();
 		Authority auth = new Authority();
 		auth.setId(adminAuth.getId());
-		user.addAuthority(auth );
+		user.addAuthority(auth);
 		user.setPassword(passwordEncoder.encode("123"));
 		user.setUsername("admin");
 		user.setDisplayName("Application Admin");
-		
+
 		log.info("___________userRepository.save(user)");
 		userRepository.save(user);
 	}
-	
+
 	public WebResponse updateProfile(HttpServletRequest httpServletRequest, WebRequest webRequest) {
 		log.info("Update profile");
-		
+
 		final User loggedUser = sessionValidationService.getLoggedUser(httpServletRequest);
 		final User user = webRequest.getUser().toEntity();
-		 
+
 		updateUserData(loggedUser, user, httpServletRequest);
-		
+
 		WebResponse response = new WebResponse();
 		response.setUser(loggedUser.toModel());
 		return response;
@@ -124,11 +121,27 @@ public class DefaultUserService {
 		if (user.getPassword() != null && !user.getPassword().isEmpty()) {
 			loggedUser.setPassword(passwordEncoder.encode(user.getPassword()));
 		}
-		
+
 		if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) {
 			loggedUser.setProfileImage(user.getProfileImage());
 			imageUploadService.uploadImage(loggedUser, httpServletRequest);
 		}
 		entityRepository.save(loggedUser);
+	}
+
+	public WebResponse register(WebRequest webRequest) {
+		try {
+			User user = webRequest.getUser().toEntity();
+			Authority authUser = authorityRepository.findTop1ByName(AuthorityType.ROLE_USER);
+			user.addAuthority(authUser);
+			user.encodePassword(passwordEncoder);
+			userRepository.save(user);
+			
+			WebResponse response = new WebResponse();
+			return response;
+
+		} catch (Exception e) {
+			throw new ApplicationException(e);
+		}
 	}
 }
