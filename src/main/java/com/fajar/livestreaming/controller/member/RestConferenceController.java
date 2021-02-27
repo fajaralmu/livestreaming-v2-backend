@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,13 +48,27 @@ public class RestConferenceController extends BaseController {
 	}
 
 	
-	@PostMapping(value = "/getroom", produces = MediaType.APPLICATION_JSON_VALUE)
-	public WebResponse getroom(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
-		return publicConferenceService.getRoom(httpRequest);
+	@PostMapping(value = "/getuserroom", produces = MediaType.APPLICATION_JSON_VALUE)
+	public WebResponse getUserRoom(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+		return publicConferenceService.getUserRoom(httpRequest);
 	}
 	 
 	@PostMapping(value = "/generateroom", produces = MediaType.APPLICATION_JSON_VALUE)
 	public WebResponse generateroom(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		return publicConferenceService.generateRoom(httpRequest);
 	}
+	
+	@PostMapping(value = "/joinroom/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public WebResponse joinroom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+		return publicConferenceService.joinRoom(code, httpRequest);
+	}
+	@PostMapping(value = "/getroom/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public WebResponse getRoom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+		return publicConferenceService.getRoom(code, httpRequest);
+	}
+	
+	@PostMapping(value = "/updateactivestatus/{active}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public WebResponse updateactivestatus(@PathVariable(name="active")String active,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+		return publicConferenceService.updateActiveStatus(Boolean.valueOf(active), httpRequest);
+	} 
 }

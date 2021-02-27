@@ -9,4 +9,6 @@ public interface ConferenceRoomRepository extends JpaRepository<ConferenceRoom	,
 
 	ConferenceRoom findTop1ByUser(User user);
 
+	ConferenceRoom findTop1ByCode(String code);
+
 }

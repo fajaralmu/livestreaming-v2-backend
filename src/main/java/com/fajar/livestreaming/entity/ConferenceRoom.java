@@ -56,8 +56,16 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 	@Default 
 	private Set<ChatMessage> chats = new HashSet<>();
 
-	public void addMembers(User member) {
+	public void addMember(User member) {
+		if (isMemberExist(member)) return;
 		members.add(member);
+	}
+
+	public boolean isMemberExist(User member) {
+		for (User user : members) {
+			if (user.idEquals(member)) return true;
+		}
+		return false;
 	}
 
 	public void removeMembers() {
@@ -81,7 +89,7 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 		ConferenceRoom room = new ConferenceRoom();
 		room.setUser(user2);
 		room.setCode(randomRoomCode());
-		room.addMembers(user2);
+		room.addMember(user2);
 		return room;
 	}
 
