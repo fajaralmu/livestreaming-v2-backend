@@ -10,9 +10,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fajar.livestreaming.dto.model.ConferenceRoomModel;
+import com.fajar.livestreaming.util.StringUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,19 +39,21 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 	private String code;
 	@Column
 	private boolean active;
-	@JoinColumn(name = "user_id", updatable = false)
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id" )
 	private User user;
 
 	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinTable(name = "room_member", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "room_id") })
-	@Default
+	@Default 
 	private Set<User> members = new HashSet<>();
-	
+
 	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinTable(name = "room_chats", joinColumns = { @JoinColumn(name = "message_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "room_id") })
-	@Default
+	@Default 
 	private Set<ChatMessage> chats = new HashSet<>();
 
 	public void addMembers(User member) {
@@ -58,18 +63,30 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 	public void removeMembers() {
 		members.clear();
 	}
-	
+
 	@Override
-	public ConferenceRoomModel toModel()  {
+	public ConferenceRoomModel toModel() {
 		ConferenceRoomModel model = getModelInstance();
 		copy(model, "members", "chats");
 		if (members != null) {
-			members.forEach(m-> model.addMember(m.toModel()));
+			members.forEach(m -> model.addMember(m.toModel()));
 		}
 		if (chats != null) {
-			chats.forEach(c-> model.addChat(c.toModel()));
+			chats.forEach(c -> model.addChat(c.toModel()));
 		}
 		return model;
+	}
+
+	public static ConferenceRoom createNew(User user2) {
+		ConferenceRoom room = new ConferenceRoom();
+		room.setUser(user2);
+		room.setCode(randomRoomCode());
+		room.addMembers(user2);
+		return room;
+	}
+
+	private static String randomRoomCode() {
+		return StringUtil.generateRandomNumber(5);
 	}
 
 }

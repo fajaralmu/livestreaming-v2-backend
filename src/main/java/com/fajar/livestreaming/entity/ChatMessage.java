@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fajar.livestreaming.constants.MessageDestination;
@@ -38,7 +39,9 @@ public class ChatMessage extends BaseEntity<ChatMessageModel> {
 	private String body;
 	@Column
 	private Date date;
-	@JoinColumn(name = "user_id", updatable = false)
+	
+	@ManyToOne 
+	@JoinColumn(name = "user_id" )
 	private User user;
 
 	 

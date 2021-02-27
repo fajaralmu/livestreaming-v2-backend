@@ -8,6 +8,7 @@ import java.util.List;
 import com.fajar.livestreaming.constants.ResponseType;
 import com.fajar.livestreaming.dto.model.ApplicationProfileModel;
 import com.fajar.livestreaming.dto.model.BaseModel;
+import com.fajar.livestreaming.dto.model.ConferenceRoomModel;
 import com.fajar.livestreaming.dto.model.UserModel;
 import com.fajar.livestreaming.entity.BaseEntity;
 import com.fajar.livestreaming.entity.setting.EntityProperty;
@@ -66,6 +67,8 @@ public class WebResponse implements Serializable {
 	private String token;
  
 	private Boolean loggedIn;
+	
+	private ConferenceRoomModel conferenceRoom;
  
 	@JsonIgnore
 	private Class<? extends BaseEntity> entityClass; 

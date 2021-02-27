@@ -16,9 +16,7 @@ import javax.persistence.Transient;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.fajar.livestreaming.annotation.FormField;
 import com.fajar.livestreaming.constants.AuthorityType;
-import com.fajar.livestreaming.constants.FieldType;
 import com.fajar.livestreaming.dto.model.AuthorityModel;
 import com.fajar.livestreaming.dto.model.UserModel;
 import com.fajar.livestreaming.entity.setting.SingleImageModel;
