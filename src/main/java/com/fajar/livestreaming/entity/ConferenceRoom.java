@@ -97,4 +97,14 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 		return StringUtil.generateRandomNumber(5);
 	}
 
+	public void removeMember(User memberToRemove) {
+		for (User member : members) {
+			if (member.idEquals(memberToRemove)) {
+				members.remove(member);
+				break;
+			}
+		}
+		
+	}
+
 }

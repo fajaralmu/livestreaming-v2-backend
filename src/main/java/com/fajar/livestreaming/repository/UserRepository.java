@@ -22,5 +22,7 @@ public interface UserRepository extends JpaRepository< User	, Long> {
 			"left join authority on authority.id = user_authority.authority_id " + 
 			"where authority.name = ?1", nativeQuery = true)
     List<User> getByAuthority(String authorityType);
+
+	User findTop1ByCode(String userCode);
 	
 }

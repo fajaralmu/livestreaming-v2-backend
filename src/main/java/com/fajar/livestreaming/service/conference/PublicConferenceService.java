@@ -14,6 +14,7 @@ import com.fajar.livestreaming.entity.User;
 import com.fajar.livestreaming.exception.ApplicationException;
 import com.fajar.livestreaming.exception.DataNotFoundException;
 import com.fajar.livestreaming.repository.ConferenceRoomRepository;
+import com.fajar.livestreaming.repository.UserRepository;
 import com.fajar.livestreaming.service.SessionValidationService;
 
 @Service
@@ -25,6 +26,8 @@ public class PublicConferenceService {
 	private SessionValidationService sessionValidationService;
 	@Autowired
 	private SessionFactory sessionFactory;
+	@Autowired
+	private UserRepository UserRepository;
 
 	public WebResponse generateRoom(HttpServletRequest httpRequest) {
 		User user = getUser(httpRequest);
@@ -101,6 +104,15 @@ public class PublicConferenceService {
 			session.close();
 		}
 		 
+	}
+
+	public WebResponse removeRoomMember(String userCode, HttpServletRequest httpRequest) {
+		User user = getUser(httpRequest);
+		ConferenceRoom room = getExsitingRoomOwnedByUser(user);
+		User member = UserRepository.findTop1ByCode(userCode);
+		room.removeMember(member);
+		conferenceRoomRepository.save(room);
+		return WebResponse.success();
 	}
 
 }
