@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -20,6 +21,7 @@ import com.fajar.livestreaming.constants.AuthorityType;
 import com.fajar.livestreaming.dto.model.AuthorityModel;
 import com.fajar.livestreaming.dto.model.UserModel;
 import com.fajar.livestreaming.entity.setting.SingleImageModel;
+import com.fajar.livestreaming.util.StringUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -40,7 +42,10 @@ public class User extends BaseEntity<UserModel> implements SingleImageModel {
 	 * 
 	 */
 	private static final long serialVersionUID = -3896877759244837620L;
-	@Column(unique = true) 
+	
+	@Column(unique = true, nullable = false) 
+	private String code;
+	@Column(unique = true, nullable = false) 
 	private String username;
 	@Column(name = "display_name") 
 	private String displayName;
@@ -104,6 +109,15 @@ public class User extends BaseEntity<UserModel> implements SingleImageModel {
 		this.authorities.forEach(a->{_authorities.add(a.toModel());});
 		user.setAuthorities(_authorities );
 		return user;
+	}
+	
+	@PrePersist
+	@Override
+	public void prePersist() {
+		super.prePersist();
+		if (null == code) {
+			code = StringUtil.generateRandomNumber(10);
+		}
 	}
 
 	public void encodePassword(BCryptPasswordEncoder passwordEncoder) {

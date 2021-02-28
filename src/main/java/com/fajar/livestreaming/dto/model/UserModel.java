@@ -34,6 +34,8 @@ public class UserModel extends BaseModel<User>{
 	 * 
 	 */
 	private static final long serialVersionUID = -3896877759244837620L;
+	@FormField(editable = false)
+	private String code;
 	@FormField
 	private String username;
 	@FormField

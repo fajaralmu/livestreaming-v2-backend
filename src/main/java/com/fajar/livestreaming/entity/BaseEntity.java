@@ -108,7 +108,7 @@ public class BaseEntity<M extends BaseModel> implements Serializable {
 	}
 
 	@PrePersist
-	private void prePersist() {
+	public void prePersist() {
 		if (this.createdDate == null) {
 			this.createdDate = new Date();
 		}

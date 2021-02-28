@@ -69,7 +69,7 @@ public class MemberUpdateService extends BaseEntityUpdateService<User>{
 			}
 			 
 		}
-		
+		object.prePersist();
 		return entityRepository.save(object);
 	}
 	
