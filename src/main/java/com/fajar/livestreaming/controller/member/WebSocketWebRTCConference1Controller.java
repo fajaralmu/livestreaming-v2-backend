@@ -38,8 +38,8 @@ public class WebSocketWebRTCConference1Controller extends BaseController {
 	/////////////////////////////////////// //////////////////////////////////////////
 	
 	@MessageMapping("/publicconference/webrtc")
-	public WebResponse webrtc(WebRequest request) throws IOException {
-		return publicConference1Service.handshakeWebRtc(request);
+	public void webrtc(WebRequest request) throws IOException {
+		publicConference1Service.handshakeWebRtc(request.getRealtimeHandshake());
 	}
 
 //	@MessageMapping("/publicconference/join")
@@ -59,12 +59,12 @@ public class WebSocketWebRTCConference1Controller extends BaseController {
 	
 	@MessageMapping("/publicconference/togglepeerstream")
 	public WebResponse togglepeerstream(WebRequest request) throws IOException {
-		return publicConference1Service.togglePeerStream(request);
+		return publicConference1Service.togglePeerStream(request.getRealtimeHandshake());
 	}
 	
 	@MessageMapping("/peerconfirm")
-	public WebResponse peerconfirm(WebRequest request) throws IOException {
-		return publicConference1Service.peerconfirm(request);
+	public void peerconfirm(WebRequest request) throws IOException {
+		publicConference1Service.peerconfirm(request.getRealtimeHandshake());
 	}
 
 }

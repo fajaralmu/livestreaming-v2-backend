@@ -44,7 +44,7 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 	@JoinColumn(name = "user_id" )
 	private User user;
 
-	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToMany  (fetch = FetchType.EAGER)
 	@JoinTable(name = "room_member", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "room_id") })
 	@Default 

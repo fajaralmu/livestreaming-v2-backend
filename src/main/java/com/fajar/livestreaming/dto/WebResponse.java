@@ -69,6 +69,9 @@ public class WebResponse implements Serializable {
 	private Boolean loggedIn;
 	
 	private ConferenceRoomModel conferenceRoom;
+	private CommonRealtimeHandshake realtimeHandshake;
+	
+	private WebRtcObject webRtcObject;
  
 	@JsonIgnore
 	private Class<? extends BaseEntity> entityClass; 

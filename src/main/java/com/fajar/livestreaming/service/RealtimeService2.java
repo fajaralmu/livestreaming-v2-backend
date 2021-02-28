@@ -41,6 +41,12 @@ public class RealtimeService2 {
 	public void sendUpdate(WebResponse response, String requestId) {
 		webSocket.convertAndSend("/wsResp/"+requestId+"/update", response); 
 	}
+
+
+	public void convertAndSend(String URL, WebResponse response) {
+		webSocket.convertAndSend(URL, response); 
+		
+	}
 	  
 	
 	
