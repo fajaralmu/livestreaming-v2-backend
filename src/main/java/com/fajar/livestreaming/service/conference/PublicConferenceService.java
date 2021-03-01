@@ -146,4 +146,11 @@ public class PublicConferenceService {
 		return WebResponse.success();
 	}
 
+	public WebResponse notifyUserEnterRoom(String code, HttpServletRequest httpRequest) {
+		User member = getUser(httpRequest);
+		ConferenceRoom room = conferenceRoomRepository.findTop1ByCode(code);
+		notifier.notifyMemberEnterRoom(room, member);
+		return WebResponse.success();
+	}
+
 }

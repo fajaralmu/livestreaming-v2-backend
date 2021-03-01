@@ -32,5 +32,9 @@ public class PublicConferenceNotifier {
 		realtimeService.convertAndSend(path(room), WebResponse.builder().conferenceUpdate(ConferenceUpdate.ROOM_INVALIDATED).build());
 		
 	}
+	public void notifyMemberEnterRoom(ConferenceRoom room, User user) {
+		realtimeService.convertAndSend(path(room), WebResponse.builder().conferenceUpdate(ConferenceUpdate.PEER_ENTER).user(user.toModel()).build());
+		
+	}
 
 }

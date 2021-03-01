@@ -74,6 +74,10 @@ public class RestConferenceController extends BaseController {
 	public WebResponse enterRoom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		return publicConferenceService.enterRoom(code, httpRequest);
 	}
+	@PostMapping(value = "/notifyuserenterroom/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public WebResponse notifyUserEnterRoom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+		return publicConferenceService.notifyUserEnterRoom(code, httpRequest);
+	}
 	@PostMapping(value = "/removeroommember/{userCode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public WebResponse removeRoomMember(@PathVariable(name="userCode")String userCode,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		return publicConferenceService.removeRoomMember(userCode, httpRequest);
