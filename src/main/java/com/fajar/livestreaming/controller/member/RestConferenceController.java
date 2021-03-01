@@ -61,10 +61,7 @@ public class RestConferenceController extends BaseController {
 		return publicConferenceService.generateRoom(httpRequest);
 	}
 	
-	@PostMapping(value = "/joinroom/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public WebResponse joinroom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
-		return publicConferenceService.joinRoom(code, httpRequest);
-	}
+	 
 	@PostMapping(value = "/leaveroom/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public WebResponse leaveRoom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		return publicConferenceService.leaveRoom(code, httpRequest);
@@ -72,6 +69,10 @@ public class RestConferenceController extends BaseController {
 	@PostMapping(value = "/getroom/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public WebResponse getRoom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		return publicConferenceService.getRoom(code, httpRequest);
+	}
+	@PostMapping(value = "/enterroom/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public WebResponse enterRoom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+		return publicConferenceService.enterRoom(code, httpRequest);
 	}
 	@PostMapping(value = "/removeroommember/{userCode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public WebResponse removeRoomMember(@PathVariable(name="userCode")String userCode,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {

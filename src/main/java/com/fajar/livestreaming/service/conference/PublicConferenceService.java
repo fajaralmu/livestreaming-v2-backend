@@ -51,11 +51,17 @@ public class PublicConferenceService {
 		ConferenceRoom room = getExsitingRoomOwnedByUser(user);
 		return WebResponse.builder().conferenceRoom(room == null ? null : room.toModel()).build();
 	}
-	public WebResponse getRoom(String code, HttpServletRequest httpRequest) {
-		return joinRoom(code, httpRequest);
+	public WebResponse getRoom(String code, HttpServletRequest httpRequest) { 
+		ConferenceRoom room = conferenceRoomRepository.findTop1ByCode(code);
+		if (null == room) {
+			throw new DataNotFoundException("Room not found");
+		}
+		if (room.isActive() ==false) {
+			throw new ApplicationException("Room Not Active");
+		}
+		return WebResponse.builder().conferenceRoom(room.toModel()).build();
 	}
-
-	public WebResponse joinRoom(String code, HttpServletRequest httpRequest) {
+	public WebResponse enterRoom(String code, HttpServletRequest httpRequest) {
 		User user = getUser(httpRequest);
 		ConferenceRoom room = conferenceRoomRepository.findTop1ByCode(code);
 		if (null == room) {
