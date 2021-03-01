@@ -65,6 +65,10 @@ public class RestConferenceController extends BaseController {
 	public WebResponse joinroom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		return publicConferenceService.joinRoom(code, httpRequest);
 	}
+	@PostMapping(value = "/leaveroom/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public WebResponse leaveRoom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+		return publicConferenceService.leaveRoom(code, httpRequest);
+	}
 	@PostMapping(value = "/getroom/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public WebResponse getRoom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		return publicConferenceService.getRoom(code, httpRequest);
@@ -77,5 +81,5 @@ public class RestConferenceController extends BaseController {
 	@PostMapping(value = "/updateactivestatus/{active}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public WebResponse updateactivestatus(@PathVariable(name="active")String active,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		return publicConferenceService.updateActiveStatus(Boolean.valueOf(active), httpRequest);
-	} 
+	}
 }

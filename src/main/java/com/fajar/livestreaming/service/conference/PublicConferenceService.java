@@ -28,6 +28,8 @@ public class PublicConferenceService {
 	private SessionFactory sessionFactory;
 	@Autowired
 	private UserRepository UserRepository;
+	@Autowired
+	private PublicConferenceNotifier notifier;
 
 	public WebResponse generateRoom(HttpServletRequest httpRequest) {
 		User user = getUser(httpRequest);
@@ -62,8 +64,10 @@ public class PublicConferenceService {
 		if (room.isActive() ==false) {
 			throw new ApplicationException("Room Not Active");
 		}
-		room.addMember(user);
-		conferenceRoomRepository.save(room);
+		if (room.addMember(user)) {
+			conferenceRoomRepository.save(room);
+			notifier.notifyNewMemberAdded(room, user);
+		}
 		return WebResponse.builder().conferenceRoom(room.toModel()).build();
 	}
 
@@ -80,6 +84,9 @@ public class PublicConferenceService {
 		}
 		room.setActive(active);
 		conferenceRoomRepository.save(room);
+		if (active == false) {
+			notifier.notifyRoomInvalidated(room);
+		}
 		return WebResponse.success();
 	}
 
@@ -107,11 +114,29 @@ public class PublicConferenceService {
 	}
 
 	public WebResponse removeRoomMember(String userCode, HttpServletRequest httpRequest) {
-		User user = getUser(httpRequest);
-		ConferenceRoom room = getExsitingRoomOwnedByUser(user);
+		ConferenceRoom room = getExsitingRoomOwnedByUser(httpRequest);
 		User member = UserRepository.findTop1ByCode(userCode);
 		room.removeMember(member);
 		conferenceRoomRepository.save(room);
+		notifier.notifyMemberRemoved(room, member);
+		return WebResponse.success();
+	}
+
+	private ConferenceRoom getExsitingRoomOwnedByUser(HttpServletRequest httpRequest) {
+		User user = getUser(httpRequest);
+		return getExsitingRoomOwnedByUser(user);
+	}
+
+	public WebResponse leaveRoom(String code, HttpServletRequest httpRequest) {
+		User member = getUser(httpRequest);
+		ConferenceRoom room = conferenceRoomRepository.findTop1ByCode(code);
+		if (room.isAdmin(member)) {
+			return updateActiveStatus(false, httpRequest);
+		}
+		
+		room.removeMember(member);
+		conferenceRoomRepository.save(room);
+		notifier.notifyMemberRemoved(room, member);
 		return WebResponse.success();
 	}
 

@@ -17,11 +17,14 @@ import javax.persistence.Transient;
 import com.fajar.livestreaming.dto.model.ConferenceRoomModel;
 import com.fajar.livestreaming.util.StringUtil;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
+import lombok.extern.slf4j.Slf4j;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "conference_room")
@@ -29,6 +32,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Slf4j
 public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 
 	/**
@@ -38,6 +42,7 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 	@Column(unique = true)
 	private String code;
 	@Column
+	@Setter(value = AccessLevel.NONE)
 	private boolean active;
 	
 	@ManyToOne
@@ -56,9 +61,10 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 	@Default 
 	private Set<ChatMessage> chats = new HashSet<>();
 
-	public void addMember(User member) {
-		if (isMemberExist(member)) return;
+	public boolean addMember(User member) {
+		if (isMemberExist(member)) return false;
 		members.add(member);
+		return true;
 	}
 
 	public boolean isMemberExist(User member) {
@@ -68,8 +74,19 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 		return false;
 	}
 
+	public void setActive(boolean active) {
+		this.active = active;
+		if (!active) {
+			removeMembers();
+		}
+	}
+	
+	/**
+	 * remove members except room admin
+	 */
 	public void removeMembers() {
 		members.clear();
+		members.add(getUser());
 	}
 
 	@Override
@@ -98,6 +115,10 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 	}
 
 	public void removeMember(User memberToRemove) {
+		if (isAdmin(memberToRemove)) {
+			log.info("CANNOT REMOVE ROOM ADMIN");
+			return;
+		}
 		for (User member : members) {
 			if (member.idEquals(memberToRemove)) {
 				members.remove(member);
@@ -105,6 +126,15 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 			}
 		}
 		
+	}
+
+	public boolean isAdmin(User member) {
+		try {
+			return user.idEquals(member);
+		}catch (Exception e) {
+			log.error("Error {}", e);
+			return false;
+		}
 	}
 
 }
