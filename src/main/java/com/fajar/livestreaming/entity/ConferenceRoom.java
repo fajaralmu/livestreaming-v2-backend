@@ -78,11 +78,16 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 		this.active = active;
 		if (!active) {
 			removeMembers();
+			removeMessages();
 		}
 	}
 	
+	private void removeMessages() {
+		chats.clear();
+	}
+
 	/**
-	 * remove members except room admin
+	 * remove members except room OWNER
 	 */
 	public void removeMembers() {
 		members.clear();
@@ -125,7 +130,6 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 				break;
 			}
 		}
-		
 	}
 
 	public boolean isAdmin(User member) {
@@ -135,6 +139,10 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 			log.error("Error {}", e);
 			return false;
 		}
+	}
+
+	public void addMessage(ChatMessage entity) {
+		chats.add(entity);
 	}
 
 }

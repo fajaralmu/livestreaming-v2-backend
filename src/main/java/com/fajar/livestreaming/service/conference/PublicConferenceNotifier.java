@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.fajar.livestreaming.dto.ConferenceUpdate;
 import com.fajar.livestreaming.dto.WebResponse;
+import com.fajar.livestreaming.entity.ChatMessage;
 import com.fajar.livestreaming.entity.ConferenceRoom;
 import com.fajar.livestreaming.entity.User;
 import com.fajar.livestreaming.service.RealtimeService2;
@@ -35,6 +36,10 @@ public class PublicConferenceNotifier {
 	public void notifyMemberEnterRoom(ConferenceRoom room, User user) {
 		realtimeService.convertAndSend(path(room), WebResponse.builder().conferenceUpdate(ConferenceUpdate.PEER_ENTER).user(user.toModel()).build());
 		
+	}
+	public void notifyChatMessage(ConferenceRoom room, ChatMessage message) {
+		// TODO Auto-generated method stub
+		realtimeService.convertAndSend(path(room), WebResponse.builder().conferenceUpdate(ConferenceUpdate.CHAT_MESSAGE).entity(message.toModel()).build());
 	}
 
 }

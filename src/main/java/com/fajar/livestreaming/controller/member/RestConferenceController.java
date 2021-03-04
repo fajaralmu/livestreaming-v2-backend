@@ -47,6 +47,7 @@ public class RestConferenceController extends BaseController {
 		LogProxyFactory.setLoggers(this);
 	}
 
+	//room user
 	
 	@PostMapping(value = "/getuserroom", produces = MediaType.APPLICATION_JSON_VALUE)
 	public WebResponse getUserRoom(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
@@ -60,7 +61,17 @@ public class RestConferenceController extends BaseController {
 	public WebResponse generateroom(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		return publicConferenceService.generateRoom(httpRequest);
 	}
+	@PostMapping(value = "/removeroommember/{userCode}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public WebResponse removeRoomMember(@PathVariable(name="userCode")String userCode,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+		return publicConferenceService.removeRoomMember(userCode, httpRequest);
+	}
 	
+	@PostMapping(value = "/updateactivestatus/{active}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public WebResponse updateactivestatus(@PathVariable(name="active")String active,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+		return publicConferenceService.updateActiveStatus(Boolean.valueOf(active), httpRequest);
+	}
+	
+	//all members
 	 
 	@PostMapping(value = "/leaveroom/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public WebResponse leaveRoom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
@@ -78,13 +89,11 @@ public class RestConferenceController extends BaseController {
 	public WebResponse notifyUserEnterRoom(@PathVariable(name="code")String code,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		return publicConferenceService.notifyUserEnterRoom(code, httpRequest);
 	}
-	@PostMapping(value = "/removeroommember/{userCode}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public WebResponse removeRoomMember(@PathVariable(name="userCode")String userCode,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
-		return publicConferenceService.removeRoomMember(userCode, httpRequest);
-	}
 	
-	@PostMapping(value = "/updateactivestatus/{active}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public WebResponse updateactivestatus(@PathVariable(name="active")String active,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
-		return publicConferenceService.updateActiveStatus(Boolean.valueOf(active), httpRequest);
+	
+	//chat
+	@PostMapping(value = "/sendchat", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public WebResponse sendChatMessage(@RequestBody WebRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+		return publicConferenceService.sendChatMessage(request, httpRequest);
 	}
 }

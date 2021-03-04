@@ -8,7 +8,9 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fajar.livestreaming.dto.WebRequest;
 import com.fajar.livestreaming.dto.WebResponse;
+import com.fajar.livestreaming.entity.ChatMessage;
 import com.fajar.livestreaming.entity.ConferenceRoom;
 import com.fajar.livestreaming.entity.User;
 import com.fajar.livestreaming.exception.ApplicationException;
@@ -52,10 +54,8 @@ public class PublicConferenceService {
 		return WebResponse.builder().conferenceRoom(room == null ? null : room.toModel()).build();
 	}
 	public WebResponse getRoom(String code, HttpServletRequest httpRequest) { 
-		ConferenceRoom room = conferenceRoomRepository.findTop1ByCode(code);
-		if (null == room) {
-			throw new DataNotFoundException("Room not found");
-		}
+		ConferenceRoom room = getRoomByCode(code);
+		 
 		if (room.isActive() ==false) {
 			throw new ApplicationException("Room Not Active");
 		}
@@ -63,10 +63,7 @@ public class PublicConferenceService {
 	}
 	public WebResponse enterRoom(String code, HttpServletRequest httpRequest) {
 		User user = getUser(httpRequest);
-		ConferenceRoom room = conferenceRoomRepository.findTop1ByCode(code);
-		if (null == room) {
-			throw new DataNotFoundException("Room not found");
-		}
+		ConferenceRoom room = getRoomByCode(code);
 		if (room.isActive() ==false) {
 			throw new ApplicationException("Room Not Active");
 		}
@@ -95,7 +92,13 @@ public class PublicConferenceService {
 		}
 		return WebResponse.success();
 	}
-
+	private ConferenceRoom getRoomByCode(String code) {
+		ConferenceRoom room = conferenceRoomRepository.findTop1ByCode(code);
+		if (null == room) {
+			throw new DataNotFoundException("Room not found");
+		}
+		return room;
+	}
 	public WebResponse deleteUserRoom(HttpServletRequest httpRequest) {
 		User user = getUser(httpRequest);
 		ConferenceRoom room = getExsitingRoomOwnedByUser(user);
@@ -135,7 +138,7 @@ public class PublicConferenceService {
 
 	public WebResponse leaveRoom(String code, HttpServletRequest httpRequest) {
 		User member = getUser(httpRequest);
-		ConferenceRoom room = conferenceRoomRepository.findTop1ByCode(code);
+		ConferenceRoom room = getRoomByCode(code);
 		if (room.isAdmin(member)) {
 			return updateActiveStatus(false, httpRequest);
 		}
@@ -148,9 +151,22 @@ public class PublicConferenceService {
 
 	public WebResponse notifyUserEnterRoom(String code, HttpServletRequest httpRequest) {
 		User member = getUser(httpRequest);
-		ConferenceRoom room = conferenceRoomRepository.findTop1ByCode(code);
+		ConferenceRoom room = getRoomByCode(code);
 		notifier.notifyMemberEnterRoom(room, member);
 		return WebResponse.success();
+	}
+
+	public WebResponse sendChatMessage(WebRequest request, HttpServletRequest httpRequest) {
+		User member = getUser(httpRequest);
+		String roomCode = request.getChatMessage().getRoomCode();
+		ConferenceRoom room = getRoomByCode(roomCode);
+		
+		ChatMessage message = request.getChatMessage().toEntity();
+		message.setUser(member);
+		room.addMessage(message);
+		ConferenceRoom savedRoom = conferenceRoomRepository.save(room);
+		notifier.notifyChatMessage(room, message);
+		return WebResponse.builder().conferenceRoom(savedRoom.toModel()).build();
 	}
 
 }

@@ -35,6 +35,8 @@ public class ChatMessageModel extends BaseModel<ChatMessage> {
 	private Date date;
 	@FormField(optionItemName = "displayName")
 	private UserModel user;
+	
+	private String roomCode;
 
 	 
 
