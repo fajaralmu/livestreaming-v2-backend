@@ -20,7 +20,9 @@ public class CommonRealtimeHandshake implements Serializable{/**
 	 */
 	private static final long serialVersionUID = -772335730474878936L;
 
-	private String origin, destination, eventId;
+	private String origin;
+	private String destination;
+	private String eventId;
 	private WebRtcObject webRtcObject;
 	private String roomCode;
 	private Boolean streamEnabled;

@@ -38,7 +38,7 @@
 	</bean>
  
 	<!-- if you use postgres, change all "Like" query statement with "ILIKE" for not activating math case  -->
-	 <bean id="dataSource_postgres"
+	<!--  <bean id="dataSource_postgres"
 		 class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName"
 			value="org.postgresql.Driver" />
@@ -46,16 +46,16 @@
 			value="jdbc:postgresql://localhost:5432/livestreaming" />
 		<property name="username" value="postgres" />
 		<property name="password" value="root" />
-	</bean>   
-	   <!--  <bean id="dataSource_postgres"
+	</bean>   --> 
+	    <bean id="dataSource_postgres"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName"
 			value="org.postgresql.Driver" />
 		<property name="url"
-			value="jdbc:postgresql://ec2-18-204-101-137.compute-1.amazonaws.com:5432/d95v9noaukbskn" />
-		<property name="username" value="tzwewrfgfvnmym" />
-		<property name="password" value="2de6a0667dedcf76c44fb3bc4dca645f24191baced618d002159f8f73046a505" />
-	</bean>    --> 
+			value="jdbc:postgresql://ec2-54-196-111-158.compute-1.amazonaws.com:5432/d6a8jlem9p76po" />
+		<property name="username" value="aesqqucyefhssz" />
+		<property name="password" value="273525949a1784da66d75f08bdd2214cab0a4257b1d6d65401672ed6c9ead70f" />
+	</bean>    
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="packagesToScan" value="com.fajar.livestreaming*" />

@@ -58,7 +58,7 @@ public class DefaultApplicationProfileService {
 
 	private ApplicationProfile saveDefaultProfile() {
 		ApplicationProfile profile = new ApplicationProfile();
-		profile.setName("Nuswantoro Commerce");
+		profile.setName("My Application");
 		profile.setAbout("");
 		profile.setWebsite("http://localhost:3000");
 		profile.setIconUrl("DefaultIcon.BMP");

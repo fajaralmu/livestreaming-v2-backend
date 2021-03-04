@@ -8,6 +8,9 @@ import com.fajar.livestreaming.dto.WebRequest;
 import com.fajar.livestreaming.dto.WebResponse;
 import com.fajar.livestreaming.service.RealtimeService2;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class PublicConferenceHandshakeService {
 
@@ -19,10 +22,14 @@ public class PublicConferenceHandshakeService {
 		String originId = request.getOrigin ();
 		String eventId = request.getEventId();
 		String destination = request.getDestination();
-
-		CommonRealtimeHandshake response = CommonRealtimeHandshake.builder().origin(originId).eventId(eventId)
+		String path = "/wsResp/webrtcpublicconference/" + roomId + "/" + destination;
+		
+		CommonRealtimeHandshake response = CommonRealtimeHandshake.builder()
+				.destination(destination) .origin(originId).eventId(eventId)
 				.webRtcObject(request.getWebRtcObject()).build();
-		realtimeService.convertAndSend("/wsResp/webrtcpublicconference/" + roomId + "/" + destination, 
+		log.info("send webrtc handshake: {}", path);
+		log.info("response: {}", response);
+		realtimeService.convertAndSend(path, 
 				WebResponse.builder().realtimeHandshake(response).build());
 		 
 	}

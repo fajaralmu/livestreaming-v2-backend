@@ -35,6 +35,7 @@ public class UserModel extends BaseModel<User>{
 	 */
 	private static final long serialVersionUID = -3896877759244837620L;
 	@FormField(editable = false)
+	@Getter(value=AccessLevel.NONE)
 	private String code;
 	@FormField
 	private String username;
@@ -73,6 +74,10 @@ public class UserModel extends BaseModel<User>{
 			return ((AuthorityModel)authorities.toArray()[0]).getName();
 		}
 		return role;
+	}
+	public String getCode() {
+		if (null ==code) return null;
+		return code.trim();
 	}
 	
 	public void setRole(AuthorityType role) {

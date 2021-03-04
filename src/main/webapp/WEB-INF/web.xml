@@ -26,6 +26,7 @@
 	</servlet>
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
+		<async-supported>true</async-supported>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy
 		</filter-class>
 	</filter>
