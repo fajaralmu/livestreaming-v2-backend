@@ -1,9 +1,10 @@
 package com.fajar.livestreaming.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.fajar.livestreaming.dto.model.ConferenceRoomModel;
 import com.fajar.livestreaming.util.StringUtil;
@@ -21,10 +21,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
-import lombok.extern.slf4j.Slf4j;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @Table(name = "conference_room")
@@ -55,11 +55,11 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 	@Default 
 	private Set<User> members = new HashSet<>();
 
-	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinTable(name = "room_chats", joinColumns = { @JoinColumn(name = "message_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "room_id") })
+//	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+//	@JoinTable(name = "room_chats", joinColumns = { @JoinColumn(name = "message_id") }, inverseJoinColumns = {
+//			@JoinColumn(name = "room_id") })
 	@Default 
-	private Set<ChatMessage> chats = new HashSet<>();
+	private List<ChatMessage> chats = new ArrayList<>();
 
 	public boolean addMember(User member) {
 		if (isMemberExist(member)) return false;

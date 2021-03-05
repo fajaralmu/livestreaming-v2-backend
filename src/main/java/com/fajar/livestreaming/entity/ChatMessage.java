@@ -41,8 +41,11 @@ public class ChatMessage extends BaseEntity<ChatMessageModel> {
 	private Date date;
 	
 	@ManyToOne 
-	@JoinColumn(name = "user_id" )
+	@JoinColumn(name = "user_id", unique = true )
 	private User user;
+	@ManyToOne 
+	@JoinColumn(name = "room_id" )
+	private ConferenceRoom room;
 
 	 
 
