@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fajar.livestreaming.dto.model.ConferenceRoomModel;
 import com.fajar.livestreaming.util.StringUtil;
@@ -55,6 +56,7 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 	@Default 
 	private Set<User> members = new HashSet<>();
 
+	@Transient
 //	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 //	@JoinTable(name = "room_chats", joinColumns = { @JoinColumn(name = "message_id") }, inverseJoinColumns = {
 //			@JoinColumn(name = "room_id") })
