@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Builder.Default;
 
 @Entity
 @Table(name = "chat_message")
@@ -38,7 +39,8 @@ public class ChatMessage extends BaseEntity<ChatMessageModel> {
 	@Column
 	private String body;
 	@Column
-	private Date date;
+	@Default
+	private Date date = new Date();
 	
 	@ManyToOne 
 	@JoinColumn(name = "user_id", unique = true )
