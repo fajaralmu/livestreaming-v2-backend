@@ -111,13 +111,19 @@ public class User extends BaseEntity<UserModel> implements SingleImageModel {
 		return user;
 	}
 	
+	public void setUniqueCode() {
+		if (getId() == null) { 
+			code = StringUtil.generateRandomNumber(10);
+		}
+		 
+	}
+	
 	@PrePersist
 	@Override
 	public void prePersist() {
 		super.prePersist();
-		if (null == code) {
-			code = StringUtil.generateRandomNumber(10);
-		}
+		setUniqueCode();
+		
 	}
 
 	public void encodePassword(BCryptPasswordEncoder passwordEncoder) {
