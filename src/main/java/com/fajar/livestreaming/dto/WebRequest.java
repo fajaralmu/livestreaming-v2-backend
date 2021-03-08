@@ -3,6 +3,7 @@ package com.fajar.livestreaming.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fajar.livestreaming.dto.model.ApplicationConfigurationModel;
 import com.fajar.livestreaming.dto.model.ApplicationProfileModel;
 import com.fajar.livestreaming.dto.model.ChatMessageModel;
 import com.fajar.livestreaming.dto.model.UserModel;
@@ -33,13 +34,13 @@ public class WebRequest implements Serializable {
 
 	private String entity;
 	private UserModel user; 
-	private ApplicationProfileModel profile; 
+	private ApplicationConfigurationModel applicationconfiguration;
 
 	/**
 	 * ==========end CRUD============
 	 */
 	private ChatMessageModel chatMessage;
-
+	private ApplicationProfileModel profile; 
 	private Filter filter; 
 	
 	private BaseEntity entityObject;

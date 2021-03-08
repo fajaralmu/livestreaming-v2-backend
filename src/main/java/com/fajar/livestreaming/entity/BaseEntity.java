@@ -41,15 +41,13 @@ public class BaseEntity<M extends BaseModel> implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@FormField
 	@Type(type = "org.hibernate.type.LongType")
 	@Column
 	@BaseField
 	private Long id;
 
 	@Column(name = "created_date")
-//	@JsonIgnore
-//	@FormField
+//	@JsonIgnore 
 	private Date createdDate;
 	@Column(name = "modified_date")
 //	@JsonIgnore

@@ -19,6 +19,7 @@ import com.fajar.livestreaming.entity.User;
 import com.fajar.livestreaming.entity.setting.EntityUpdateInterceptor;
 import com.fajar.livestreaming.entity.setting.MultipleImageModel;
 import com.fajar.livestreaming.entity.setting.SingleImageModel;
+import com.fajar.livestreaming.exception.DataNotFoundException;
 import com.fajar.livestreaming.repository.EntityRepository;
 import com.fajar.livestreaming.service.SessionValidationService;
 import com.fajar.livestreaming.service.resources.FileService;
@@ -104,16 +105,16 @@ public class BaseEntityUpdateService<T extends BaseEntity> {
 	protected void validateEntityFormFields(BaseEntity object, boolean newRecord, HttpServletRequest httpServletRequest) {
 		log.info("validating entity: {} newRecord: {}", object.getClass(), newRecord);
 		object.validateNullValues();
-		try {
-
-			BaseEntity existingEntity = null;
-			if (!newRecord) {
-				existingEntity = (BaseEntity) entityRepository.findById(object.getClass(), object.getId());
-				if (null == existingEntity) {
-					throw new Exception("Existing Entity Not Found");
-				}
-				object.validateNullValues();
+		BaseEntity existingEntity = null;
+		if (!newRecord) {
+			existingEntity = (BaseEntity) entityRepository.findById(object.getClass(), object.getId());
+			if (null == existingEntity) {
+				throw new DataNotFoundException("Existing Entity Not Found");
 			}
+			
+		}
+		try {
+			object.validateNullValues();
 			Class modelClass = object.getTypeArgument();
 			log.info("{} -> model: {}", object.getClass(), modelClass);
 			List<Field> modelFields = EntityUtil.getDeclaredFields(modelClass);

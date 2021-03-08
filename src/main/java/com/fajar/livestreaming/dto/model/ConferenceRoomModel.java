@@ -34,7 +34,7 @@ public class ConferenceRoomModel extends BaseModel<ConferenceRoom> {
 
 	@FormField(optionItemName = "displayName")
 	private UserModel user;
-
+	
 	@Default
 	private Set<UserModel> members = new HashSet<>();
 	@Default
@@ -42,12 +42,16 @@ public class ConferenceRoomModel extends BaseModel<ConferenceRoom> {
 	public void addMember(UserModel member) {
 		members.add(member);
 	}
+	private ApplicationConfigurationModel config;
 	@Override
 	public ConferenceRoom toEntity() {
 		throw new ApplicationException("Not Allowed");
 	}
 	public void addChat(ChatMessageModel model) {
 		chats.add(model);
+	}
+	public void setConfig(ApplicationConfigurationModel model) {
+		config = model;
 	}
 
 }

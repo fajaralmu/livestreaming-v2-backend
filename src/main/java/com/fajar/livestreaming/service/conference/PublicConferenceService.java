@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.fajar.livestreaming.dto.WebRequest;
 import com.fajar.livestreaming.dto.WebResponse;
+import com.fajar.livestreaming.dto.model.ConferenceRoomModel;
 import com.fajar.livestreaming.entity.ChatMessage;
 import com.fajar.livestreaming.entity.ConferenceRoom;
 import com.fajar.livestreaming.entity.User;
@@ -21,6 +22,7 @@ import com.fajar.livestreaming.repository.ChatMessageRepository;
 import com.fajar.livestreaming.repository.ConferenceRoomRepository;
 import com.fajar.livestreaming.repository.UserRepository;
 import com.fajar.livestreaming.service.SessionValidationService;
+import com.fajar.livestreaming.service.config.DefaultConfigurationService;
 
 @Service
 public class PublicConferenceService {
@@ -37,6 +39,8 @@ public class PublicConferenceService {
 	private UserRepository UserRepository;
 	@Autowired
 	private PublicConferenceNotifier notifier;
+	@Autowired
+	private DefaultConfigurationService defaultConfigurationService;
 
 	public WebResponse generateRoom(HttpServletRequest httpRequest) {
 		User user = getUser(httpRequest);
@@ -80,7 +84,9 @@ public class PublicConferenceService {
 		}
 		List<ChatMessage> chats = chatMessageRepository.findByRoomOrderByIdAsc(room);
 		room.setChats(chats);
-		return WebResponse.builder().conferenceRoom(room.toModel()).build();
+		ConferenceRoomModel roomModel = room.toModel();
+		roomModel.setConfig(defaultConfigurationService.getAndCheckApplicationConfiguration().toModel());
+		return WebResponse.builder().conferenceRoom(roomModel).build();
 	}
 
 	private User getUser(HttpServletRequest httpRequest) {

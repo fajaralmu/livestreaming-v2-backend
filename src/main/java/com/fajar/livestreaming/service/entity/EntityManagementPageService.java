@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 
 import com.fajar.livestreaming.dto.WebResponse;
 import com.fajar.livestreaming.dto.model.BaseModel;
+import com.fajar.livestreaming.entity.ApplicationConfiguration;
 import com.fajar.livestreaming.entity.BaseEntity;
 import com.fajar.livestreaming.entity.ChatMessage;
 import com.fajar.livestreaming.entity.ConferenceRoom;
@@ -90,6 +91,7 @@ public class EntityManagementPageService {
 		addConfig(result, ChatMessage.class, ("fas fa-book")); 
 		addConfig(result, User.class, ("fas fa-users")); 
 		addConfig(result, ConferenceRoom.class, ("fas fa-video")); 
+		addConfig(result, ApplicationConfiguration.class, ("fas fa-cog")); 
 		
 		return WebResponse.builder().generalList(result).build();
 	}
