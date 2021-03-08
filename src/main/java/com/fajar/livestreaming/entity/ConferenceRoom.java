@@ -54,7 +54,7 @@ public class ConferenceRoom extends BaseEntity<ConferenceRoomModel> {
 	@JoinTable(name = "room_member", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "room_id") })
 	@Default 
-	private Set<User> members = new HashSet<>();
+	private List<User> members = new ArrayList<>();
 
 	@Transient
 //	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

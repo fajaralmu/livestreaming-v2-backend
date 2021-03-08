@@ -8,19 +8,22 @@ import java.util.Properties;
 import javax.persistence.Entity;
 
 import org.apache.commons.io.FileUtils;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import com.fajar.livestreaming.entity.BaseEntity;
+import com.fajar.livestreaming.entity.ConferenceRoom;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CriteriaTester {
-	final static String inputDir = "D:\\Development\\Kafila Projects\\arabic-club-backend\\src\\"
-			+ "main\\java\\com\\fajar\\arabicclub\\entity\\";
+	final static String inputDir = "D:\\Development\\Fajar\\livestreaming-v2\\back-end\\src\\"
+			+ "main\\java\\com\\fajar\\livestreaming\\entity\\";
 	final static String outputDir = "D:\\Development\\entities_json\\";
 	// test
 	static Session testSession;
+	 
 
 	static ObjectMapper mapper = new ObjectMapper();
 	static List<Class<?>> managedEntities = new ArrayList<>();
@@ -30,7 +33,9 @@ public class CriteriaTester {
 	public static void main (String[] args) throws Exception {
 		setSession();
 		Transaction tx = testSession.beginTransaction();
-		 
+		 Criteria c = testSession.createCriteria(ConferenceRoom.class);
+		 List list = c.list();
+		 System.out.println(list.size());
 		 tx.commit();
 		System.exit(0);
 	}
@@ -87,7 +92,7 @@ public class CriteriaTester {
 
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.dialect", dialect);
-		properties.setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5432/arabic-club");
+		properties.setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5432/livestreaming");
 		properties.setProperty("hibernate.connection.username", "postgres");
 		properties.setProperty("hibernate.connection.password", "root");
 
