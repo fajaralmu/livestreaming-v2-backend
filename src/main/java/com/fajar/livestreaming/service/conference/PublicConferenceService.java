@@ -211,4 +211,25 @@ public class PublicConferenceService {
 		return WebResponse.builder().conferenceRoom(savedRoom.toModel()).build();
 	}
 
+	public WebResponse updateRoomInfo(WebRequest webRequest, HttpServletRequest httpRequest) {
+		
+		ConferenceRoom room = getExsitingRoomOwnedByUser(httpRequest);
+		if (null == room) {
+			throw new DataNotFoundException("ROOM NOT FOUND");
+		}
+		ConferenceRoomModel roomModel = webRequest.getConferenceRoom();
+		
+		return WebResponse.builder().conferenceRoom(updateAndSaveRoomInfo(room, roomModel)).build();
+	}
+
+	private ConferenceRoomModel updateAndSaveRoomInfo(ConferenceRoom room, ConferenceRoomModel roomModel) {
+		 
+		if (null != roomModel.getCode()) {
+			room.setCode(roomModel.getCode());
+		}
+		 
+		ConferenceRoom saved = conferenceRoomRepository.save(room);
+		return saved.toModel();
+	}
+
 }

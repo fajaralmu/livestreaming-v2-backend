@@ -6,6 +6,7 @@ import java.util.List;
 import com.fajar.livestreaming.dto.model.ApplicationConfigurationModel;
 import com.fajar.livestreaming.dto.model.ApplicationProfileModel;
 import com.fajar.livestreaming.dto.model.ChatMessageModel;
+import com.fajar.livestreaming.dto.model.ConferenceRoomModel;
 import com.fajar.livestreaming.dto.model.UserModel;
 import com.fajar.livestreaming.entity.BaseEntity;
 
@@ -41,6 +42,7 @@ public class WebRequest implements Serializable {
 	 */
 	private ChatMessageModel chatMessage;
 	private ApplicationProfileModel profile; 
+	private ConferenceRoomModel conferenceRoom;
 	private Filter filter; 
 	
 	private BaseEntity entityObject;

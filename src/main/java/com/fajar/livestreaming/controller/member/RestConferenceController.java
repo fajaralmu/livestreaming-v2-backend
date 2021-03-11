@@ -70,6 +70,10 @@ public class RestConferenceController extends BaseController {
 	public WebResponse updateactivestatus(@PathVariable(name="active")String active,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		return publicConferenceService.updateActiveStatus(Boolean.valueOf(active), httpRequest);
 	}
+	@PostMapping(value = "/updateroominfo", produces = MediaType.APPLICATION_JSON_VALUE)
+	public WebResponse updateRoomInfo(@RequestBody WebRequest webRequest,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+		return publicConferenceService.updateRoomInfo(webRequest, httpRequest);
+	}
 	
 	//all members
 	 
