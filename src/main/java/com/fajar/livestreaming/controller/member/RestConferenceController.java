@@ -93,8 +93,9 @@ public class RestConferenceController extends BaseController {
 	
 	//chat
 	@PostMapping(value = "/sendchat", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void sendChatMessage(@RequestBody WebRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+	public WebResponse sendChatMessage(@RequestBody WebRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 //		return 
 				publicConferenceService.sendChatMessage(request, httpRequest);
+				return WebResponse.success();
 	}
 }
