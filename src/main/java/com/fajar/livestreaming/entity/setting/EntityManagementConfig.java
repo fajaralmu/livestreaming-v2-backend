@@ -7,6 +7,7 @@ import com.fajar.livestreaming.dto.model.BaseModel;
 import com.fajar.livestreaming.entity.BaseEntity;
 import com.fajar.livestreaming.exception.ApplicationException;
 import com.fajar.livestreaming.service.entity.BaseEntityUpdateService;
+import com.fajar.livestreaming.util.StringUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -72,7 +73,7 @@ public class EntityManagementConfig implements Serializable {
 		if (null == dtoAnnotation) {
 			throw new ApplicationException("NOT Custom Entity: "+ modelClass) ;
 		}
-		String label = dtoAnnotation.value().equals("") ? entityClass.getSimpleName() : dtoAnnotation.value();
+		String label = dtoAnnotation.value().equals("") ? StringUtil.extractCamelCase(entityClass.getSimpleName()) : dtoAnnotation.value();
 		return label;
 	}
 
